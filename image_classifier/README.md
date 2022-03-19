@@ -24,7 +24,9 @@ Two files in the test and train folders are created under the name ```labels.csv
 
 To run the training script, execute:
 
-```python main.py```
+```
+python main.py
+```
 
 ### Evaluation 
 
