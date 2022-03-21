@@ -79,7 +79,7 @@ def train():
         
             if network_learned:
                 valid_loss_min = batch_loss
-                torch.save(net.state_dict(), f'image_classifier_test-acc-{val_acc}.pt')
+                torch.save(net.state_dict(), f'image_classifier_test-acc-{val_acc[-1]}.pt')
                 print('Improvement-Detected, save-model')
         net.train()
 
