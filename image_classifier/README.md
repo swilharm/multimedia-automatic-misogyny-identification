@@ -9,8 +9,6 @@ It achieved the accuracy of 66.7% on the test set and 75.9% on the training set 
 
 ### Data Preprocessing
 
-TODO
-
 To preprocess the dataset, run the following command once:
 
 ```
@@ -30,8 +28,7 @@ python main.py
 
 ### Evaluation 
 
-TODO
-
-
-
-#### TODO: add arguments to script, add eval script, add examples 
+To load the model weights and do the evaluaton for 4 random images from the test set, run the following command:
+```
+python vizualize.py
+```
