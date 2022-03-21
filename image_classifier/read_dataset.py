@@ -19,7 +19,7 @@ def extract_image_data():
 
             
     data = pd.read_csv('./data/TRAINING/training.csv', sep='\t')
-    test_labels = pd.read_csv('test_labels.txt', 
+    test_labels = pd.read_csv('./data/test_labels.txt', 
                               sep='\t', header=None, 
                               names=['file_name', 'misogynous', 'shaming', 'stereotype', 'objectification', 'violence'])
     test_labels = test_labels[['file_name', 'misogynous']]
