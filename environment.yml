@@ -8,6 +8,7 @@ dependencies:
   - jupyter
   - numpy
   - pandas
+  - scikit-learn
   - matplotlib
   - pytorch
   - torchvision=0.9.0
