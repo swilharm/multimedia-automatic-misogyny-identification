@@ -4,7 +4,7 @@ The model that was used for the training is pretrained Wide ResNet-50-2 model fr
 
 Model weights can be found [here](https://drive.google.com/file/d/1Ln6hVyvePq1OeWYgVyTOdaY63FU5HOFh/view?usp=sharing)
 
-It achieved the accuracy of 66.7% on the test set and 75.9% on the training set just after 3 epochs. 
+It achieved the accuracy of 65.8% on the test set and 75.9% on the training set just after 3 epochs. 
 
 
 ### Data Preprocessing
