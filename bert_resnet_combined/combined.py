@@ -2,7 +2,7 @@ from modules import *
 from main import load_resnet
 from bert import load_bert
 
-
+f1 = 0
 # device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
 # load image model
@@ -17,7 +17,8 @@ else:
   labels.append(0)
   labels = np.array(labels)
 acc = sum(labels == true_txt)/len(true_txt)
+f1 += f1_score(true_txt, labels, average='macro')
 
 if __name__ == "__main__":
-    print('Accuracy of the combination of models is: ', acc*100, '%')
-    # 62.8%
+    print('Accuracy of the combination of models is: ', acc*100, '%') # 62.8%
+    print('Macro f1-score of the combination of models is: ', f1) # 58.2
