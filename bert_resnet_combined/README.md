@@ -6,7 +6,7 @@ ResNet weights can be found [here](https://drive.google.com/file/d/1Ln6hVyvePq1O
 
 It achieved the accuracy of 65.8% on the test set and 75.9% on the training set just after 3 epochs. 
 
-The model that was used for text classification is the pretrained cased Bidirectional Encoder Representations from Transformers  ([BERT])(https://arxiv.org/abs/1810.04805), which achieves 53.8% accuracy on the test set after 3 epochs.
+The model that was used for text classification is the pretrained cased Bidirectional Encoder Representations from Transformers  ([BERT](https://arxiv.org/abs/1810.04805)), which achieves 53.8% accuracy on the test set after 3 epochs.
 
 BERT weights can be found [here](https://drive.google.com/file/d/1qILWpYfbNouY6ScOQEb1K3hLSGFAA3yi/view?usp=sharing)
 
