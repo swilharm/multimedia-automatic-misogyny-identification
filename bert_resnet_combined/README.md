@@ -51,3 +51,7 @@ To load both classifiers and compute their accuracy, run:
 ```
 python combined.py
 ```
+
+### Notebook
+
+Data preprocessing, exploration and visualization, as well as all the code from the scripts with outputs can be found in the Jupyter Notebook ```bert_resnet.ipynb```
