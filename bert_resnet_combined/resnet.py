@@ -23,7 +23,7 @@ optimizer = optim.SGD(net.parameters(), lr=0.0005, momentum=0.9)
 
 num_ftrs = net.fc.in_features
 net.fc = nn.Linear(num_ftrs, 256)
-net.fc = net.fc.cuda() if use_cuda else net.fc
+net.fc = net.fc.cuda() if device else net.fc
 
 def train():
     
