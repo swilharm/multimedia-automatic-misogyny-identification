@@ -10,7 +10,7 @@ The model that was used for text classification is the pretrained cased Bidirect
 
 BERT weights can be found [here](https://drive.google.com/file/d/1qILWpYfbNouY6ScOQEb1K3hLSGFAA3yi/view?usp=sharing)
 
-The combined accuracy of the two models on the whole test dataset is 62.8%
+The combined accuracy of the two models on the whole test dataset is 62.8% and the macro averaged f1 score is 58.2.
 
 ### Data Preprocessing
 
