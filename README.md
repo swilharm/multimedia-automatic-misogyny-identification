@@ -4,11 +4,11 @@
 1. Create a new conda environment with all required dependencies: `conda env create -f environment.yml`
 2. Activate the environment: `conda activate mami-san`
 3. Download dataset [here](https://drive.google.com/drive/folders/1x04eqdhH_JBadUeutIf02szK_778mmHH) and put all files in folder ./MAMI DATASET/
-4. Download resnet weights [here](https://drive.google.com/file/d/1Ln6hVyvePq1OeWYgVyTOdaY63FU5HOFh/view?usp=sharing) and put them in the main directory
-5. Download bert weights [here](https://drive.google.com/file/d/1qILWpYfbNouY6ScOQEb1K3hLSGFAA3yi/view?usp=sharing) and put them in the main directory
+4. Download ResNet weights [here](https://drive.google.com/file/d/1Ln6hVyvePq1OeWYgVyTOdaY63FU5HOFh/view?usp=sharing) and put them in the main directory
+5. Download Bert weights [here](https://drive.google.com/file/d/1qILWpYfbNouY6ScOQEb1K3hLSGFAA3yi/view?usp=sharing) and put them in the main directory
 6. To run everything with one command, run `python main.py`. Alternatively go through it step by step as described below.
 
-### Model Desription
+### Model Description
 
 The model that was used for image classification is the pretrained Wide ResNet-50-2 model from [“Wide Residual Networks”](https://arxiv.org/pdf/1605.07146.pdf).
 
@@ -51,7 +51,7 @@ python bert.py
 
 ### Evaluation 
 
-To load the image classifier weights and do the evaluaton for 4 random images from the test set, run the following command:
+To load the image classifier weights and do the evaluation for 4 random images from the test set, run the following command:
 ```
 python vizualize.py
 ```
