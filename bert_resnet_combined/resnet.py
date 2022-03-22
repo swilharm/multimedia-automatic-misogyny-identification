@@ -17,14 +17,9 @@ device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 net = models.wide_resnet50_2(pretrained=False)
 net = net.cuda() if device else net
 
-use_cuda = True
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.SGD(net.parameters(), lr=0.0005, momentum=0.9)
 
-
-def accuracy(out, labels):
-    _,pred = torch.max(out, dim=1)
-    return torch.sum(pred==labels).item()
 
 num_ftrs = net.fc.in_features
 net.fc = nn.Linear(num_ftrs, 256)
@@ -58,8 +53,8 @@ def train():
         train_loss.append(running_loss/total_step)
         print(f'\ntrain-loss: {np.mean(train_loss):.4f}, train-acc: {(100 * correct/total):.4f}')
         batch_loss = 0
-        total_t=0
-        correct_t=0
+        total_t = 0
+        correct_t = 0
         with torch.no_grad():
             net.eval()
             for data_t, target_t in (test_dataloader):
