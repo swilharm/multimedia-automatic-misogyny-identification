@@ -2,7 +2,8 @@ from modules import *
 from read_dataset import extract_text_data, prepare_text_data
 
 train_df, test_df = extract_text_data()
-device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+use_cuda = torch.cuda.is_available()
+device = torch.device('cuda:0' if use_cuda else 'cpu')
 _, test_dataloader_text = prepare_text_data(batch_size=16)
 
 class BertClassifier(nn.Module):
@@ -11,6 +12,7 @@ class BertClassifier(nn.Module):
 
         super(BertClassifier, self).__init__()
 
+        transformers.logging.set_verbosity_error()
         self.bert = BertModel.from_pretrained('bert-base-cased')
         self.dropout = nn.Dropout(dropout)
         self.linear = nn.Linear(768, 5)
@@ -25,6 +27,7 @@ class BertClassifier(nn.Module):
 
         return final_layer
 
+transformers.logging.set_verbosity_error()
 tokenizer = BertTokenizer.from_pretrained('bert-base-cased')
 labels = {'0':0,
           '1':1
@@ -205,29 +208,36 @@ def pytorch_predict_text(model, test_loader, device):
     
 
 def load_bert(checkpoint='./bert.pt'):
-  bert = BertClassifier()
-  tokenizer = BertTokenizer.from_pretrained('bert-base-cased')
-  criterion = nn.CrossEntropyLoss()
-  optimizer = optim.Adam(bert.parameters(), lr=1e-6)
-  bert = bert.cuda() if device else bert
-  trained_bert = torch.load(checkpoint)
-  bert.load_state_dict(trained_bert)
-  true_txt, pred_txt, prob_txt = pytorch_predict_text(bert, test_dataloader_text, device)
-  return true_txt, pred_txt, prob_txt
+    bert = BertClassifier()
+    transformers.logging.set_verbosity_error()
+    tokenizer = BertTokenizer.from_pretrained('bert-base-cased')
+    criterion = nn.CrossEntropyLoss()
+    optimizer = optim.Adam(bert.parameters(), lr=1e-6)
+    use_cuda = torch.cuda.is_available()
+    bert = bert.cuda() if use_cuda else bert
+
+    if use_cuda:
+        trained_bert = torch.load(checkpoint)
+    else:
+        trained_bert = torch.load(checkpoint, map_location=torch.device('cpu'))
+    bert.load_state_dict(trained_bert)
+    true_txt, pred_txt, prob_txt = pytorch_predict_text(bert, test_dataloader_text, device)
+    return true_txt, pred_txt, prob_txt
 
 def start_training():
-  np.random.seed(1)
-  df_train, df_val = np.split(train_df.sample(frac=1, random_state=42), [int(.99*len(train_df))])
-  bert = BertClassifier()
-  tokenizer = BertTokenizer.from_pretrained('bert-base-cased')
-  criterion = nn.CrossEntropyLoss()
-  optimizer = optim.Adam(bert.parameters(), lr=1e-6)
-  bert = bert.cuda() if device else bert
-  EPOCHS = 1
-  model = BertClassifier()
-  LR = 1e-6            
-  train(model, df_train, df_val, LR, EPOCHS)
-  torch.save(model.state_dict(), 'bert.pt')
+    np.random.seed(1)
+    df_train, df_val = np.split(train_df.sample(frac=1, random_state=42), [int(.99*len(train_df))])
+    bert = BertClassifier()
+    transformers.logging.set_verbosity_error()
+    tokenizer = BertTokenizer.from_pretrained('bert-base-cased')
+    criterion = nn.CrossEntropyLoss()
+    optimizer = optim.Adam(bert.parameters(), lr=1e-6)
+    use_cuda = torch.cuda.is_available()
+    bert = bert.cuda() if use_cuda else bert
+    EPOCHS = 1
+    model = BertClassifier()
+    LR = 1e-6            
+    train(model, df_train, df_val, LR, EPOCHS)
 
 
 if __name__ == "__main__":

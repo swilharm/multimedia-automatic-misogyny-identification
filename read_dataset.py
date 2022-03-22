@@ -6,12 +6,10 @@ def unzip_files():
         os.mkdir(path)
     except OSError as error:
         pass
-          
-    with zipfile.ZipFile('MAMI DATASET-20220117T151001Z-001.zip', 'r') as zip_ref:
-            zip_ref.extractall('./', pwd=b'*MaMiSemEval2022!')
     
     zip_list = ['./MAMI DATASET/training.zip', './MAMI DATASET/test.zip']
     for zip in zip_list:
+        print(f"Unpacking {zip}...")
         with zipfile.ZipFile(zip, 'r') as zip_ref:
             zip_ref.extractall('./data/', pwd=b'*MaMiSemEval2022!')
 
@@ -155,6 +153,4 @@ def prepare_text_data(batch_size=16):
     return train_dataloader_text, test_dataloader_text
 
 if __name__ == "__main__":
-    uzip_files()
-    # extract_image_data()
-    # extract_text_data()
+    unzip_files()

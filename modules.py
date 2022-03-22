@@ -19,6 +19,7 @@ import torchvision.transforms as transform
 import matplotlib.pyplot as plt
 from pylab import *
 import PIL.Image as Image
+import transformers
 from transformers import BertTokenizer, BertModel
 from tqdm import tqdm
 from sklearn.metrics import f1_score

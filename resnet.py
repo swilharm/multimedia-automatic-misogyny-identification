@@ -12,10 +12,11 @@ train_acc = []
 total_step = len(train_dataloader)
 
 
-device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+use_cuda = torch.cuda.is_available()
+device = torch.device('cuda:0' if use_cuda else 'cpu')
 
 net = models.wide_resnet50_2(pretrained=True)
-net = net.cuda() if device else net
+net = net.cuda() if use_cuda else net
 
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.SGD(net.parameters(), lr=0.0005, momentum=0.9)
@@ -23,9 +24,10 @@ optimizer = optim.SGD(net.parameters(), lr=0.0005, momentum=0.9)
 
 num_ftrs = net.fc.in_features
 net.fc = nn.Linear(num_ftrs, 256)
-net.fc = net.fc.cuda() if device else net.fc
+net.fc = net.fc.cuda() if use_cuda else net.fc
 
 def train():
+    global valid_loss_min
     
     for epoch in range(1, n_epochs+1):
         running_loss = 0.0
@@ -106,19 +108,22 @@ def pytorch_predict_images(model, test_loader, device):
 
 def load_resnet(checkpoint='./wide_resnet.pt'):
 
-  net = models.wide_resnet50_2(pretrained=True)
-  net = net.cuda() if device else net
-  num_ftrs = net.fc.in_features
-  net.fc = nn.Linear(num_ftrs, 256)
-  net.fc = net.fc.cuda() if device else net.fc
-  criterion = nn.CrossEntropyLoss()
-  optimizer = optim.Adam(net.parameters(), lr=0.0005)
+    net = models.wide_resnet50_2(pretrained=True)
+    net = net.cuda() if use_cuda else net
+    num_ftrs = net.fc.in_features
+    net.fc = nn.Linear(num_ftrs, 256)
+    net.fc = net.fc.cuda() if use_cuda else net.fc
+    criterion = nn.CrossEntropyLoss()
+    optimizer = optim.Adam(net.parameters(), lr=0.0005)
 
-  trained_model = torch.load(checkpoint)
-  net.load_state_dict(trained_model)
-  _, test_dataloader_im = prepare_data(batch_size=16)
-  true_im, pred_im, prob_im = pytorch_predict_images(net, test_dataloader_im, device)
-  return true_im, pred_im, prob_im 
+    if use_cuda:
+        trained_model = torch.load(checkpoint)
+    else:
+        trained_model = torch.load(checkpoint, map_location=torch.device('cpu'))
+    net.load_state_dict(trained_model)
+    _, test_dataloader_im = prepare_data(batch_size=16)
+    true_im, pred_im, prob_im = pytorch_predict_images(net, test_dataloader_im, device)
+    return true_im, pred_im, prob_im 
 
 if __name__ == "__main__":
     train()
