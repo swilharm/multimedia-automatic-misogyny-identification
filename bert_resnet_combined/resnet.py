@@ -83,6 +83,47 @@ def train():
                 print('Improvement-Detected, save-model')
         net.train()
 
+def pytorch_predict_images(model, test_loader, device):
+    '''
+    Make prediction from a pytorch model 
+    '''
+    # set model to evaluate model
+    model.eval()
+    
+    y_true = torch.tensor([], dtype=torch.long, device=device)
+    all_outputs = torch.tensor([], device=device)
+    
+    with torch.no_grad():
+        for data in test_loader:
+            inputs = [i.to(device) for i in data[:-1]]
+            labels = data[-1].to(device)
+            
+            outputs = model(*inputs)
+            y_true = torch.cat((y_true, labels), 0)
+            all_outputs = torch.cat((all_outputs, outputs), 0)
+    
+    y_true = y_true.cpu().numpy()  
+    _, y_pred = torch.max(all_outputs, 1)
+    y_pred = y_pred.cpu().numpy()
+    y_pred_prob = F.softmax(all_outputs, dim=1).cpu().numpy()
+    
+    return y_true, y_pred, y_pred_prob
+
+def load_resnet(checkpoint='./wide_resnet.pt'):
+
+  net = models.wide_resnet50_2(pretrained=True)
+  net = net.cuda() if device else net
+  num_ftrs = net.fc.in_features
+  net.fc = nn.Linear(num_ftrs, 256)
+  net.fc = net.fc.cuda() if device else net.fc
+  criterion = nn.CrossEntropyLoss()
+  optimizer = optim.Adam(net.parameters(), lr=0.0005)
+
+  trained_model = torch.load(checkpoint)
+  net.load_state_dict(trained_model)
+  _, test_dataloader_im = prepare_data(batch_size=16)
+  true_im, pred_im, prob_im = pytorch_predict_images(net, test_dataloader_im, device)
+  return true_im, pred_im, prob_im 
+
 if __name__ == "__main__":
     train()
-    
