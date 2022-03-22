@@ -14,7 +14,7 @@ total_step = len(train_dataloader)
 
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
-net = models.wide_resnet50_2(pretrained=False)
+net = models.wide_resnet50_2(pretrained=True)
 net = net.cuda() if device else net
 
 criterion = nn.CrossEntropyLoss()
